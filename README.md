@@ -90,7 +90,23 @@ In the reForge sigma path used here, both passes read `p.scheduler`. A separate 
 
 ### Tolerances and defaults
 
-Log Relative Tolerance sets `rtol = 10^x`; Log Absolute Tolerance sets `atol = 10^x`. For example, `−3` means `0.001`, and `−4` means `0.0001`. More negative values request stricter error control and usually require more computation. Numerical accuracy does not directly determine an image's visual appeal.
+These controls set how much numerical error an adaptive solver allows:
+
+- **Log Relative Tolerance**: an error allowance relative to the size of the values being calculated.
+- **Log Absolute Tolerance**: an error allowance that also applies when those values are near zero.
+
+Both sliders use the same scale:
+
+| Slider value | Actual tolerance |
+|---|---|
+| −2 | 0.01 |
+| −3 | 0.001 |
+| −4 | 0.0001 |
+| −5 | 0.00001 |
+
+Moving from −3 to −4 makes the tolerance ten times smaller. Stricter tolerances usually take longer; they do not necessarily produce better-looking images. Start with the defaults: relative −3 (0.001), absolute −4 (0.0001).
+
+For readers who enjoy the numerical details, the [TDE README](https://github.com/seti9585/sd-webui-tde-sampler#adjusting-computation-and-accuracy) and [RK README](https://github.com/seti9585/sd-webui-rk-sampler) explain tolerances and solver behavior in more detail. The controls and implementation details differ between extensions; use this README for reForge-ODE's settings.
 
 The tolerance sliders become editable for explicitly selected adaptive solvers. They are greyed out for fixed-step solvers and `Use same sampler`. When Hires.fix inherits an explicit adaptive txt2img solver, its stored Hires.fix tolerance values still apply even though its sliders are greyed out; temporarily select the adaptive solver in Hires.fix to edit them.
 
@@ -134,14 +150,6 @@ Higher order describes numerical accuracy, not a guarantee of a better-looking i
 
 ## Technical details and reproducibility
 
-```text
-dx/dσ = (x − D(x, σ)) / σ
-```
-
-`x` is the latent, `σ` the noise level, and `D(x, σ)` the model's denoised prediction. Integration proceeds from higher to lower noise levels. The ODE path processes batch images one at a time.
-
-The extension retains the native implementation's dtype behavior. A float64 time/solver option does not mean that the entire latent or model computation is promoted to float64.
-
 PNG infotext records the solver for each pass. Adaptive solvers also record that pass's tolerances and step cap:
 
 ```text
@@ -153,11 +161,6 @@ reForge-ODE hires log_rtol, reForge-ODE hires log_atol, reForge-ODE hires max_st
 
 Fixed-step passes record only the solver among these extension-specific keys. The Script restores solver/tolerance fields from infotext; **Max ODE Steps must be matched manually**. For reproduction, also retain the WebUI commit, dependency versions, model, VAE, seed, prompts, scheduler, Hires.fix settings, and other extension/backend settings. Updating reForge can change the native function this extension calls.
 
-## Acknowledgements and license
-
-Thank you to **redhottensors**, author of [ComfyUI-ODE](https://github.com/redhottensors/ComfyUI-ODE), for the original ODE implementation, and to **Panchovix**, author of [reForge](https://github.com/Panchovix/stable-diffusion-webui-reForge), for porting and integrating it into reForge. This extension builds on their work. Thanks also to the [torchdiffeq](https://github.com/rtqichen/torchdiffeq) developers.
-
-This extension is distributed under **GNU AGPL v3**, following the reForge code included in its fallback. ComfyUI-ODE's upstream code is under **GNU GPL v3**. Both license texts are included in [LICENSE](LICENSE); see [NOTICE.md](NOTICE.md) for attribution.
 
 ---
 
@@ -253,7 +256,23 @@ TDE／RK を導入していれば、片方のサンプラーとして選べま�
 
 ### 許容誤差と既定値
 
-Log Relative Tolerance は `rtol = 10^x`、Log Absolute Tolerance は `atol = 10^x` です。例えば `−3` は `0.001`、`−4` は `0.0001` を意味します。負の値を小さくするほど誤差制御は厳しくなり、通常は計算量が増えます。数値精度がそのまま画像の見栄えを決めるわけではありません。
+可変ステップ法で、計算上の誤差をどの程度まで許すかを決める設定です。
+
+- **Log Relative Tolerance（相対許容誤差）**：計算中の値の大きさに応じて、許す誤差を決めます。
+- **Log Absolute Tolerance（絶対許容誤差）**：計算中の値がゼロに近い場合にも使う、誤差の基準です。
+
+どちらのスライダーも、表示値と実際の許容誤差は次の対応です。
+
+| スライダーの表示値 | 実際の許容誤差 |
+|---|---|
+| −2 | 0.01 |
+| −3 | 0.001 |
+| −4 | 0.0001 |
+| −5 | 0.00001 |
+
+−3 から −4 にすると、許す誤差は10分の1になります。厳しくするほど通常は生成に時間がかかりますが、画像の見栄えが良くなるとは限りません。まずは既定値の相対 −3（0.001）、絶対 −4（0.0001）から使ってください。
+
+数値計算の話をもっと詳しく知りたい方は、[TDE の README](https://github.com/seti9585/sd-webui-tde-sampler#計算量と精度の調整) や [RK の README](https://github.com/seti9585/sd-webui-rk-sampler#日本語) をどうぞ。許容誤差や解法について、そちらで詳しく説明しています。拡張機能ごとに設定や実装は異なるので、reForge-ODE の操作はこの README を参照してください。
 
 許容誤差スライダーは、可変ステップ法を具体的に選んだ場合に編集できます。固定ステップ法と `Use same sampler` ではグレーアウトします。ただし Hires.fix が txt2img の具体的な可変ステップ法を継承する場合は、グレーアウト中でも Hires.fix 側に保持された値を使います。編集するときは、Hires.fix 側でも一時的にその可変ステップ法を選んでください。
 
@@ -297,14 +316,6 @@ Script アコーディオンを有効にすると、Advanced Settings → `Max O
 
 ## 技術的な詳細と再現性
 
-```text
-dx/dσ = (x − D(x, σ)) / σ
-```
-
-`x` は latent、`σ` はノイズレベル、`D(x, σ)` はモデルの denoised 予測です。高いノイズレベルから低いノイズレベルへ積分します。ODE 経路では、バッチ内の画像を1枚ずつ処理します。
-
-dtype の扱いも内蔵実装の挙動に従います。時間管理・ソルバーのオプションに float64 が指定されていても、latent やモデルの計算全体が float64 に変わることを意味しません。
-
 PNG の infotext には各段階のソルバーを記録します。可変ステップ法では、その段階の許容誤差とステップ数上限も記録します。
 
 ```text
@@ -315,6 +326,12 @@ reForge-ODE hires log_rtol, reForge-ODE hires log_atol, reForge-ODE hires max_st
 ```
 
 固定ステップ法で記録する拡張機能固有の項目はソルバーのみです。Script 欄は infotext からソルバー・許容誤差を復元しますが、**Max ODE Steps は手動で合わせてください**。再現には WebUI のコミット、依存ライブラリ、モデル、VAE、seed、prompt、スケジューラ、Hires.fix、他の拡張機能やバックエンドの設定も記録してください。reForge を更新すると、呼び出す内蔵関数が変わる可能性があります。
+
+## Acknowledgements and license
+
+Thank you to **redhottensors**, author of [ComfyUI-ODE](https://github.com/redhottensors/ComfyUI-ODE), for the original ODE implementation, and to **Panchovix**, author of [reForge](https://github.com/Panchovix/stable-diffusion-webui-reForge), for porting and integrating it into reForge. This extension builds on their work. Thanks also to the [torchdiffeq](https://github.com/rtqichen/torchdiffeq) developers.
+
+This extension is distributed under **GNU AGPL v3**, following the reForge code included in its fallback. ComfyUI-ODE's upstream code is under **GNU GPL v3**. Both license texts are included in [LICENSE](LICENSE); see [NOTICE.md](NOTICE.md) for attribution.
 
 ## 謝辞とライセンス
 
