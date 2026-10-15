@@ -9,7 +9,7 @@ its license text, including its existing notice, is retained in [LICENSE](LICENS
 
 The ODE core originates from redhottensors' [ComfyUI-ODE](https://github.com/redhottensors/ComfyUI-ODE),
 `nodes/nodes_ode.py`, distributed under the GNU General Public License, version 3.
-Its license text is retained in [licenses/ComfyUI-ODE-GPL-3.0.txt](licenses/ComfyUI-ODE-GPL-3.0.txt).
+Its license text is retained in [LICENSE, Part 2](LICENSE).
 Upstream attribution is retained; no ownership of upstream work is claimed.
 
 The extension's additions include independent sampler registration and settings,

@@ -3,7 +3,7 @@
 SPDX-License-Identifier: AGPL-3.0-only
 
 The ODE core originates from redhottensors/ComfyUI-ODE (GPL version 3).
-See NOTICE.md and licenses/ComfyUI-ODE-GPL-3.0.txt.
+See NOTICE.md and LICENSE (Part 2).
 The ODE fallback follows Panchovix/stable-diffusion-webui-reForge,
 ldm_patched/k_diffusion/sampling.py (GNU AGPL version 3).
 https://github.com/Panchovix/stable-diffusion-webui-reForge

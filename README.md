@@ -157,7 +157,7 @@ Fixed-step passes record only the solver among these extension-specific keys. Th
 
 Thank you to **redhottensors**, author of [ComfyUI-ODE](https://github.com/redhottensors/ComfyUI-ODE), for the original ODE implementation, and to **Panchovix**, author of [reForge](https://github.com/Panchovix/stable-diffusion-webui-reForge), for porting and integrating it into reForge. This extension builds on their work. Thanks also to the [torchdiffeq](https://github.com/rtqichen/torchdiffeq) developers.
 
-This extension is distributed under **GNU AGPL v3**, following the reForge code included in its fallback. ComfyUI-ODE's upstream code is under **GNU GPL v3**. See [LICENSE](LICENSE), [NOTICE.md](NOTICE.md), and the [upstream GPL text](licenses/ComfyUI-ODE-GPL-3.0.txt).
+This extension is distributed under **GNU AGPL v3**, following the reForge code included in its fallback. ComfyUI-ODE's upstream code is under **GNU GPL v3**. Both license texts are included in [LICENSE](LICENSE); see [NOTICE.md](NOTICE.md) for attribution.
 
 ---
 
@@ -320,4 +320,4 @@ reForge-ODE hires log_rtol, reForge-ODE hires log_atol, reForge-ODE hires max_st
 
 ODE の元実装である [ComfyUI-ODE](https://github.com/redhottensors/ComfyUI-ODE) の作者 **redhottensors 氏**と、その実装を [reForge](https://github.com/Panchovix/stable-diffusion-webui-reForge) に移植・統合された作者 **Panchovix 氏**に感謝します。この拡張機能は、お二人の成果を基にしています。また、[torchdiffeq](https://github.com/rtqichen/torchdiffeq) の開発者の皆様にも感謝します。
 
-同梱フォールバックの移植元である reForge に従い、本拡張機能は **GNU AGPL v3** で配布します。元となる ComfyUI-ODE のコードは **GNU GPL v3** です。[LICENSE](LICENSE)、[NOTICE.md](NOTICE.md)、[元実装の GPL 本文](licenses/ComfyUI-ODE-GPL-3.0.txt) を参照してください。
+同梱フォールバックの移植元である reForge に従い、本拡張機能は **GNU AGPL v3** で配布します。元となる ComfyUI-ODE のコードは **GNU GPL v3** です。両ライセンスの本文は [LICENSE](LICENSE) にまとめています。出典は [NOTICE.md](NOTICE.md) を参照してください。
